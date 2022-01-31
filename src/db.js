@@ -1,6 +1,7 @@
 const {MongoClient} = require('mongodb');
 
 module.exports = class DB { 
+<<<<<<< Updated upstream
 
     constructor(db, ui) {
         this.db = db;
@@ -20,6 +21,13 @@ module.exports = class DB {
         }
         return false;
     }
+=======
+    constructor(credentials) {
+        this.credentials = credentials;
+    }
+    
+    connect() {
+>>>>>>> Stashed changes
 
     async createCollection(collection, api_key) {
         
