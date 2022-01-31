@@ -1,0 +1,12 @@
+{
+    "credentials": {
+        "db": {
+            "host": "example.com",
+            "port": 27017,
+            "database": "forms",
+            "username": "user",
+            "password": "password"
+        },
+        "api_key": "1234567890"
+    }
+}
