@@ -1,26 +1,17 @@
-let requirements = ['express', 'mongodb',]
-for (let requirement in requirements) {
-	try {
-		require(requirement);
-	} catch (e) {
-		console.log(`Could not import ${requirement}`);
-	}
-}
-
-
 const express = require('express')
 const UI = require('./ui.js')
 const DB = require('./db.js')
-const Valid = require('./validdd.js')
+const Valid = require('./valid.js')
 const config = require('../config.json') // Make sure that you add a config.json file to the root of the project. Reference can be seen in config.json.example
 
 if (config != undefined && config != null) {
 	const ui = new UI(console);
 	const db = new DB(config.credentials.db, ui)
-	//validate config
 
-	let response = db.connect();
-	response.then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)})
+	const app = express()
+	const port = config.port
+
+	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
 
 	app.get('/server/status', (request, response) => {
 		response.send({

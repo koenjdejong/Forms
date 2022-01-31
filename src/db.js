@@ -1,7 +1,7 @@
 const {MongoClient} = require('mongodb');
 
 module.exports = class DB { 
-    
+
     constructor(db, ui) {
         this.db = db;
         this.ui = ui;
@@ -19,11 +19,7 @@ module.exports = class DB {
             await client.close()
         }
         return false;
-    }
-    constructor(credentials) {
-        this.credentials = credentials;
-    }
-    
+    }    
 
     async createCollection(collection, api_key) {
         
