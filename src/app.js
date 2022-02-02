@@ -10,6 +10,7 @@ if (config != undefined && config != null) {
 
 	const app = express()
 	const port = config.port
+	app.use(express.json())
 
 	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
 
@@ -29,9 +30,8 @@ if (config != undefined && config != null) {
 	})
 
 	app.post('/forms/:form/submit', (request, response) => {
-		let dbResponse = db.insertForm(request.params.form, request.body);
-		dbResponse.then((success, message) => {
-			response.send({
+		db.insertForm(request.params.form, request.body).then((success, message) => {
+			response.send ({
 				success: success,
 				message: message
 			})

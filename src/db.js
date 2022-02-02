@@ -6,6 +6,7 @@ module.exports = class DB {
         this.db = db;
         this.ui = ui;
         this.uri = `mongodb://${encodeURIComponent(this.db.username)}:${encodeURIComponent(this.db.password)}@${encodeURIComponent(this.db.host)}`;
+        console.log(this.uri);
     }
     
     async connect() {
@@ -15,10 +16,10 @@ module.exports = class DB {
             return true;
         } catch (error) {
             this.ui.showError(error);
+            return (false, "There was an database connection error. Check the logs for more info.");
         } finally {
             await client.close()
         }
-        return false;
     }    
 
     async createCollection(collection, api_key) {
@@ -26,9 +27,10 @@ module.exports = class DB {
     }
 
     async insertForm(collection, data) {
-        this.ui.showMessage(`Inserting form data into ${data}`);
-        const uri = `mongodb://${encodeURIComponent(this.db.username)}:${encodeURIComponent(this.db.password)}@${encodeURIComponent(this.db.host)}`;
-        const client = new MongoClient(uri, {useNewUrlParser: true});
+        this.ui.showMessage(`Inserting form data into ${JSON.stringify(data)}`);
+        Object.keys(data)
+        
+        const client = new MongoClient(this.uri, {useNewUrlParser: true});
         try {
             await client.connect();
             const db = client.db(this.db.name);
@@ -37,10 +39,10 @@ module.exports = class DB {
             return true;
         } catch (error) {
             this.ui.showError(error);
+            return (false, "There was an database connection error. Check the logs for more info.");
         } finally {
             await client.close()
         }
-        return false;
     }
 
 }
