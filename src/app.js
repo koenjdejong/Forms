@@ -30,12 +30,27 @@ if (config != undefined && config != null) {
 	})
 
 	app.post('/forms/:form/submit', (request, response) => {
-		db.insertForm(request.params.form, request.body).then((success, message) => {
-			response.send ({
-				success: success,
-				message: message
-			})
-		})
+		if (request.params.form === undefined || request.params.form === null) {
+			response.send({success: false, message: "No form name provided"})
+			return
+		}
+		if (request.body === undefined || request.body === null || request.body === {}) {
+			response.send({success: false, message: "No data provided"})
+			return
+		}
+		db.insertForm(request.params.form, request.body).then((reply) => {response.send(reply)})
+	})
+
+	app.post("/forms/:form/create", (request, response) => {
+		if (request.get("api-key") === undefined || request.get("api-key") === null) {
+			response.send({success: false, message: "No API key provided"})
+			return
+		}
+		if (request.params.form === undefined || request.params.form === null) {
+			response.send({success: false, message: "No form name provided"})
+			return
+		}
+		db.createForm(request.params.form, request.get("api-key")).then((reply) => {response.send(reply)})
 	})
 
 	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})

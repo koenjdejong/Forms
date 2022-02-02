@@ -4,7 +4,7 @@ module.exports = class UI {
     }
     
     showMessage(message) {
-        this.output.log(`Time: ${(new Date).toLocaleString()}; Message: ${message.replace(/(\r\n|\n|\r)/gm, "")}`);
+        this.output.log(`Time: ${(new Date).toLocaleString()}; Message: ${String(message).replace(/(\r\n|\n|\r)/gm, "")}`);
     }
 
     showError(error) {
