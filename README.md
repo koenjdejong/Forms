@@ -4,5 +4,23 @@ ___
 ___
 
 ## Description
+This API can be used for creating and submitting forms. It uses MongoDB for storing the form data, so when a form is edited, no change is required. 
+
+## Libraries
+- [NodeJS 14.x](https://nodejs.org/en/download/)
+- [ExpressJS 4.x](https://expressjs.com/en/api.html)
+- [MongoDB 4.x](https://docs.mongodb.com/drivers/node/current/)
 
 ## Installation
+Required: NodeJS 14.x, MongoDB database access
+
+Add your details to the `config.json` file. Use the config.json.example file as a template.
+
+To run the API locally:
+```node app.js```
+
+For a production server, use this [guide](https://expressjs.com/en/advanced/best-practice-performance.html)
+
+### TODO
+- [ ] Create spamfilter
+- [ ] Send message to user when form is submitted
