@@ -10,9 +10,7 @@ if (config != undefined && config != null) {
 
 	const app = express()
 	const port = config.port
-	app.set("port", port)
 	app.use(express.json())
-	app.set('view engine', 'ejs')
 
 	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
 
@@ -27,7 +25,8 @@ if (config != undefined && config != null) {
 
 	app.get('/', (request, response) => {
 		// Return API documentation
-		response.send('Hello World!')
+		response.send({success: true, message: 'Currently no API documentation published!'})
+		// response.sendFile(path.join(__dirname, '../docs/index.html'))
 	})
 
 	app.post('/forms/:form/submit', (request, response) => {
@@ -39,7 +38,7 @@ if (config != undefined && config != null) {
 			response.send({success: false, message: "No data provided"})
 			return
 		}
-		db.insertForm(request.params.form, request.body).then((reply) => {response.send(reply)})
+		db.insertForm(request.params.form, request.body).then((reply) => {response.send(reply)}).catch((error) => {ui.showError(error); response.send({success: false, message: "An unforeseen error occured"})})
 	})
 
 	app.post("/forms/:form/create", (request, response) => {
@@ -51,9 +50,9 @@ if (config != undefined && config != null) {
 			response.send({success: false, message: "No form name provided"})
 			return
 		}
-		db.createForm(request.params.form, request.get("api-key")).then((reply) => {response.send(reply)})
-	})
+		db.createForm(request.params.form, request.get("api-key")).then((reply) => {response.send(reply)}).catch((error) => {ui.showError(error); response.send({success: false, message: "An unforeseen error occured"})})
+	})	
 
-	app.listen(() => {ui.showMessage(`Server started on port ${port}`)})
+	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})
 }
 
