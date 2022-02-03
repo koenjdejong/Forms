@@ -10,7 +10,9 @@ if (config != undefined && config != null) {
 
 	const app = express()
 	const port = config.port
+	app.set("port", port)
 	app.use(express.json())
+	app.set('view engine', 'ejs')
 
 	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
 
@@ -20,7 +22,6 @@ if (config != undefined && config != null) {
 			status: "OK",
 			message: "Server is running",
 			uptime: process.uptime()
-
 		})
 	})
 
@@ -53,6 +54,6 @@ if (config != undefined && config != null) {
 		db.createForm(request.params.form, request.get("api-key")).then((reply) => {response.send(reply)})
 	})
 
-	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})
+	app.listen(() => {ui.showMessage(`Server started on port ${port}`)})
 }
 

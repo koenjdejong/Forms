@@ -7,7 +7,6 @@ module.exports = class DB {
         this.ui = ui;
         this.uri = `mongodb://${encodeURIComponent(this.db.username)}:${encodeURIComponent(this.db.password)}@${encodeURIComponent(this.db.host)}`;
         this.restrictedCollections = ["api_keys", "users", "main"];
-        console.log(JSON.stringify(this.db));
     }
     
     async connect() {
@@ -59,12 +58,12 @@ module.exports = class DB {
         try {
             await client.connect();
             const db = client.db(this.db.database);
-            if (api_key == this.db.api_key) {
+            if ((await this.validAPIKey(db, api_key)).success) {
                 if (!(await this.getForms(db)).includes(form)) {
                     await db.createCollection(form);
-                    return {success: true, message: "Collection created successfully"};
+                    return {success: true, message: "Form Collection created successfully"};
                 }
-                return {success: false, message: "Collection already exists"};
+                return {success: false, message: "Form already exists"};
             }
             return {success: false, message: "Invalid API key"};
         } catch (error) {
@@ -76,9 +75,11 @@ module.exports = class DB {
     }
 
     async validAPIKey(db, api_key) {
-        if (api_key == this.db.api_key) {
-            return {success: true, message: "Valid API key"};
+        const api_keys = db.collection("api_keys")
+        let api_key_data = await api_keys.findOne({api_key: api_key});
+        if (api_key_data) {
+            return {success: true, message: "API key is valid"};
         }
-        return {success: false, message: "Invalid API key"};
+        return {success: false, message: "API key is invalid"};
     }
 }
