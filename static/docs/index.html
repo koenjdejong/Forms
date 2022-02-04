@@ -44,7 +44,7 @@
     <div class="mobile-menu-closer"></div>
     <div class="content-menu">
         <div class="content-infos">
-            <div class="info"><b>Version:</b> 1.0.1</div>
+            <div class="info"><b>Version:</b> 1.0.2</div>
             <div class="info"><b>Last Updated:</b> 4th of February 2022</div>
         </div>
         <ul>
@@ -70,76 +70,82 @@
         <div class="overflow-hidden content-section" id="content-get-started">
             <h1>Get started</h1>
             <p>This is the API documentation for the a Form Submission System, as shown on <a href="https://github.com/koenjdejong/Forms">this github</a>. It does not validate any input, in terms of what the message should contain, but does filter out spam. </p>
-            <p>To use this API for creating collections of forms, you need an <strong>API key</strong>. You can submit forms without an API key, of course.</p>
+            <p>To use this API for creating collections of forms, you need an <strong>API key</strong>. You can submit forms without an API key, of course. This can be done using JSON objects as a request body</p>
         </div>
         <div class="overflow-hidden content-section" id="content-submit-form">
             <h2>How to submit a form</h2>
             <p>
-                To submit a form, you make a POST call to:<br>
+                To submit a form, you make a POST call to: (Replace value in [&nbsp;&nbsp;] ) <br>
                 <code class="higlighted break-word">https://formapi.example.com/forms/[form_name]/submit</code>
             </p>
-            <br>
-            <h4>QUERY PARAMETERS</h4>
-            
+            <p>The following is an example how a form request could look like with parameters, but this is entirely free for implementation. </p>
+            <h4>Example</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>name</td>
+                        <td>String</td>
+                        <td>Koen de Jong</td>
+                    </tr>
+                    <tr>
+                        <td>email</td>
+                        <td>String</td>
+                        <td>mail@koendejong.net</td>
+                    </tr>
+                    <tr>
+                        <td>gender</td>
+                        <td>String</td>
+                        <td>female</td>
+                    </tr>
+                    <tr>
+                        <td>message</td>
+                        <td>String</td>
+                        <td>Feedback is always appreciated</td>
+                    </tr>
+                    <tr>
+                        <td>subscription</td>
+                        <td>Boolean</td>
+                        <td>true</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>In JSON format, it would look like this:</p>
+            <code style="color:white">
+                &nbsp;&nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"name": "Koen de Jong",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"email": "mail@koendejong.net",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"gender": "female",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"message": "Feedback is always appreciated",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"subscription": true,<br>
+                    &nbsp;&nbsp;}
+            </code>
         </div>
         <div class="overflow-hidden content-section" id="content-create-form">
             <h2>How to create a form</h2>
             <p>
-                To create a form collection, you make a POST call to:<br>
+                To create a form collection, you make a POST call to: (Replace value in [&nbsp;&nbsp;] ) <br>
                 <code class="higlighted break-word">https://formapi.example.com/forms/[form_name]/create</code>
             </p>
-            <br>
-            <h4>QUERY PARAMETERS</h4>
+            <p>To be able to create a form, you must specify a valid API key in a header. The table shows an example. </p>
             <table>
                 <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                </tr>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>secret_key</td>
-                    <td>String</td>
-                    <td>Your API key.</td>
-                </tr>
-                <tr>
-                    <td>search</td>
-                    <td>String</td>
-                    <td>(optional) A search word to find character by name.</td>
-                </tr>
-                <tr>
-                    <td>house</td>
-                    <td>String</td>
-                    <td>
-                        (optional) a string array of houses:
-                    </td>
-                </tr>
-                <tr>
-                    <td>alive</td>
-                    <td>Boolean</td>
-                    <td>
-                        (optional) a boolean to filter alived characters
-                    </td>
-                </tr>
-                <tr>
-                    <td>gender</td>
-                    <td>String</td>
-                    <td>
-                        (optional) a string to filter character by gender:<br> m: male<br> f: female
-                    </td>
-                </tr>
-                <tr>
-                    <td>offset</td>
-                    <td>Integer</td>
-                    <td>(optional - default: 0) A cursor for use in pagination. Pagination starts offset the specified offset.</td>
-                </tr>
-                <tr>
-                    <td>limit</td>
-                    <td>Integer</td>
-                    <td>(optional - default: 10) A limit on the number of objects to be returned, between 1 and 100.</td>
-                </tr>
+                    <tr>
+                        <td>api_key</td>
+                        <td>011a8fd1-51b6-4fd7-bbf4-90b75363013e</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
