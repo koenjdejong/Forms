@@ -4,8 +4,9 @@ const DB = require('./db.js')
 const Valid = require('./valid.js')
 const config = require('../config.json') // Make sure that you add a config.json file to the root of the project. Reference can be seen in config.json.example
 
-if (config != undefined && config != null) {
-	const ui = new UI(console);
+const ui = new UI(console);
+
+if (config != undefined && config != null && new Valid(config).validDBCredentials()) {
 	const db = new DB(config.credentials.db, ui)
 
 	const app = express()
@@ -54,5 +55,6 @@ if (config != undefined && config != null) {
 	})	
 
 	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})
+} else {
+	ui.showMessage(`No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.`)
 }
-

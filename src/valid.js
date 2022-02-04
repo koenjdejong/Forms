@@ -1,11 +1,13 @@
-module.exports = class Valid { 
+module.exports = class Valid {
     constructor(config) {
         this.config = config;
     }
-
     
     validDBCredentials() {
-        if (! "credentials" in this.config) {
+        if (! "credentials" in this.config && ! "db" in this.config.credentials) {
+            return false;
+        }
+        if (! "port" in this.config) {
             return false;
         }
         let fields = ['host', 'port', 'user', 'password', 'database'];
