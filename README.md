@@ -24,3 +24,7 @@ For a production server, use this [guide](https://expressjs.com/en/advanced/best
 ### TODO
 - [ ] Create spamfilter
 - [ ] Send message to user when form is submitted
+    - [ ] Create a way to send emails
+    - [ ] Create a way to send SMS
+- [ ] Create logging mechanism
+- [ ] Finish documentation
