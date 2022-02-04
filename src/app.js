@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express')
 const UI = require('./ui.js')
 const DB = require('./db.js')
@@ -12,6 +13,7 @@ if (config != undefined && config != null && new Valid(config).validDBCredential
 	const app = express()
 	const port = config.port
 	app.use(express.json())
+	app.use(express.static('../static'))
 
 	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
 
@@ -25,9 +27,8 @@ if (config != undefined && config != null && new Valid(config).validDBCredential
 	})
 
 	app.get('/', (request, response) => {
-		// Return API documentation
-		response.send({success: true, message: 'Currently no API documentation published!'})
-		// response.sendFile(path.join(__dirname, '../docs/index.html'))
+		// response.send({success: true, message: 'Currently no API documentation published!'})
+		response.sendFile(path.join(__dirname, '../static/docs/index.html'))
 	})
 
 	app.post('/forms/:form/submit', (request, response) => {
