@@ -31,3 +31,5 @@ For a production server, use this [guide](https://expressjs.com/en/advanced/best
 - [ ] Get IP from request and log, as well as other stuff
 - [ ] Create static data for each request, such as IP, useragent, date and time etc
 - [ ] Maybe have something every request needs to have, name, title and email and message or something
+    - This is to make sure that the form is not filled in with random data
+    - Can be done by a template when creating and storing that in db under specific name?
