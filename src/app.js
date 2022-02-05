@@ -15,7 +15,7 @@ if (config != undefined && config != null && new Valid(config).validDBCredential
 	app.use(express.json())
 	app.use(express.static('../static'))
 
-	db.connect().then((success) => {ui.showMessage(`MongoDB connection: ${success ? "succeeded" : "failed"}`)});
+	db.connect().then((reply) => {ui.showMessage(`MongoDB connection: ${reply.success ? "succeeded" : "failed"}`)});
 
 	app.get('/server/status', (request, response) => {
 		response.send({
