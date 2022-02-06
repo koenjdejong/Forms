@@ -9,12 +9,12 @@ A config.json file is required for the API to work. This file contains database 
 Test cases for the above specified file will be ran at the start of the program, but can be avoided by using the --no-test flag. 
 
 ## Libraries
-- [NodeJS 14.x](https://nodejs.org/en/download/)
+- [NodeJS 14.x - 17.x](https://nodejs.org/en/download/)
 - [ExpressJS 4.x](https://expressjs.com/en/api.html)
 - [MongoDB 4.x](https://docs.mongodb.com/drivers/node/current/)
 
 ## Installation
-Required: NodeJS 14.x, MongoDB database access
+Required: NodeJS 14.x or greater, MongoDB database access, mail server access with SMTP.
 
 Add your details to the `config.json` file. Use the config.json.example file as a template.
 
