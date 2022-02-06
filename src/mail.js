@@ -8,7 +8,7 @@ module.exports = class Mail {
         this.receivers = this.mail.receivers;
     }
 
-    async createTransport() {
+    async connect() {
         try {
             this.transporter = nodemailer.createTransport({
                 host: this.mail.host,
@@ -39,13 +39,30 @@ module.exports = class Mail {
         
         Your friendly Form Submission System`;
     }
+
+    async test() {
+        const options = {
+            from: "",
+            to: "",
+            subject: `TEST`,
+            text: "TEST"
+        };
+        try {
+            await this.transporter.sendMail(options);
+            this.ui.showMessage("Mail sent successfully");
+            return {success: true, message: "Test was successful"};
+        } catch (error) {
+            console.log("Failed to send mail");
+            console.log(error)
+            return {success: false, message: "There was an error sending the mail. Check the logs for more info."}
+        }
+    }
     
     async send(form, data) {
-        // TODO Send mail to multiple recipients
         this.ui.showMessage(`Trying to send mail to: ${this.receiver} from the form ${form} and with the message: ${this.createMessage(form, data)}`);
         const options = {
-            from: this.mail.sender,
-            to: this.receivers[0],
+            from: this.mail.username,
+            to: this.mail.receivers,
             subject: `New message from form: ${form}`,
             text: this.createMessage(form, data)
         };

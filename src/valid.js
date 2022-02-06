@@ -40,7 +40,8 @@ module.exports = class Valid {
     }
 
     validDBConnection() {
-        return (await (new DB(config.db, new UI())).connect()).success;
+        // replace with .then
+        return new DB(this.config.credentials.db, new UI()).connect().then(reply => {console.log(reply)});
     }
 
     validMailCredentials() {
@@ -60,7 +61,10 @@ module.exports = class Valid {
     }
 
     validMailConnection() {
-        let mail = await (new Mail(config.mail, new UI())).connect();
-        return mail.test().success;
+        let mail = new Mail(this.config.credentials.mail, new UI())
+        if (mail.connect()) {
+            return mail.test().then(response => {console.log(response)});;
+        }
+        return false;
     }
 }

@@ -15,34 +15,36 @@ function test() {
 		ui.showMessage("No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.")
 		return false;
 	}
-
 	if (!valid.validMailCredentials()) {
 		ui.showError("Undefined mail credentials in config.json file. Please refer to config.json.example for more info.");
 		return false;
 	}
-		
+	if (!valid.validMailConnection()) {
+		ui.showError("Could not connect to mail server. Please check your credentials in config.json file.");
+		return false;
+	}
 	if (!valid.validDBCredentials()) {
 		ui.showError("Undefined database credentials in config.json file. Please refer to config.json.example for more info.");
 		return false;
 	}
-
+	if (!valid.validDBConnection()) {
+		ui.showError("All database details were found, but a connection could not be made. Please check your database credentials.");
+		return false;
+	}
 	if (!valid.validPort()) {
 		ui.showError("Invalid port number in config.json file. Please refer to config.json.example for more info. Port number should be between 0 and 65535.");
 		return false;
 	}
-
 	if (config.port === undefined || config.port === null) {
 		ui.showError("Undefined port in config.json file. Please refer to config.json.example for more info.");
 		return false;
 	}
-
-	
-
 	return true;
 }
 
 function main() {
 	const mail = new Mail(config.credentials.mail, ui)
+	mail.connect()
 	const db = new DB(config.credentials.db, ui, mail)
 
 	const app = express()

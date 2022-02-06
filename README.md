@@ -28,7 +28,7 @@ For a production server, use this [guide](https://expressjs.com/en/advanced/best
 - [ ] Send message to user when form is submitted
     - [ ] Create a way to send emails
     - [ ] Create a way to send SMS
-- [ ] Create logging mechanism
+- [ ] Create logging mechanism to files
 - [x] Finish documentation
 - [ ] Get IP from request and log, as well as other stuff
 - [ ] Create static data for each request, such as IP, useragent, date and time etc

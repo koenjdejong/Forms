@@ -43,7 +43,12 @@ module.exports = class DB {
             if ((await this.getForms(db)).includes(form) && !this.restrictedCollections.includes(form)) {
                 const formSelection = db.collection(form);
                 await formSelection.insertOne(data);
-                return {success: true, message: "Form data inserted successfully"};
+                let reply = await this.mail.send(form, data);
+                if (reply.success) {
+                    return {success: true, message: "Data inserted successfully & mail sent successfully"};
+                } else {
+                    return {success: true, message: "Data inserted successfully, mail failed to send"};
+                }
             }
             return {success: false, message: "Form does not exist"};
         } catch (error) {
