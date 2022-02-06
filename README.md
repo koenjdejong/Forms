@@ -27,7 +27,7 @@ For a production server, use this [guide](https://expressjs.com/en/advanced/best
     - [ ] Create a way to send emails
     - [ ] Create a way to send SMS
 - [ ] Create logging mechanism
-- [ ] Finish documentation
+- [x] Finish documentation
 - [ ] Get IP from request and log, as well as other stuff
 - [ ] Create static data for each request, such as IP, useragent, date and time etc
 - [ ] Maybe have something every request needs to have, name, title and email and message or something

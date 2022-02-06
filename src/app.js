@@ -2,20 +2,47 @@ const path = require('path');
 const express = require('express')
 const UI = require('./ui.js')
 const DB = require('./db.js')
+const Mail = require('./mail.js')
 const Valid = require('./valid.js')
 const config = require('../config.json') // Make sure that you add a config.json file to the root of the project. Reference can be seen in config.json.example
 
 const ui = new UI(console);
 
-if (config != undefined && config != null && new Valid(config).validDBCredentials()) {
-	const db = new DB(config.credentials.db, ui)
+function test() {
+	const valid = new Valid(config);
+	if (valid.validConfig()) {
+		ui.showMessage("No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.")
+		return
+	}
+
+	if (!valid.validMailCredentials()) {
+		ui.showError("Undefined mail credentials in config.json file. Please refer to config.json.example for more info.");
+		return
+	}
+		
+	if (!valid.validDBCredentials()) {
+		ui.showError("Undefined database credentials in config.json file. Please refer to config.json.example for more info.");
+		return
+	}
+
+
+
+	
+
+	if (config.port === undefined || config.port === null) {
+		ui.showError("Undefined port in config.json file. Please refer to config.json.example for more info.");
+		return
+	}
+}
+
+function main() {
+	const mail = new Mail(config.mail, ui)
+	const db = new DB(config.credentials.db, ui, mail)
 
 	const app = express()
 	const port = config.port
 	app.use(express.json())
 	app.use(express.static('../static'))
-
-	db.connect().then((reply) => {ui.showMessage(`MongoDB connection: ${reply.success ? "succeeded" : "failed"}`)});
 
 	app.get('/server/status', (request, response) => {
 		response.send({
@@ -56,6 +83,7 @@ if (config != undefined && config != null && new Valid(config).validDBCredential
 	})	
 
 	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})
-} else {
-	ui.showMessage(`No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.`)
 }
+
+test();
+main();

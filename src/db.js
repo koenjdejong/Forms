@@ -2,9 +2,10 @@ const {MongoClient} = require('mongodb');
 
 module.exports = class DB { 
 
-    constructor(db, ui) {
+    constructor(db, ui, mail) {
         this.db = db;
         this.ui = ui;
+        this.mail = mail;
         this.uri = `mongodb://${encodeURIComponent(this.db.username)}:${encodeURIComponent(this.db.password)}@${encodeURIComponent(this.db.host)}`;
         this.restrictedCollections = ["api_keys", "users", "main"];
     }
