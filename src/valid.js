@@ -8,7 +8,7 @@ module.exports = class Valid {
     }
 
     validConfig() {
-        return config === undefined || config === null || config === {};
+        return this.config === undefined || this.config === null || this.config === {};
     }
     
     validPort() {
@@ -40,16 +40,16 @@ module.exports = class Valid {
     }
 
     validDBConnection() {
-        return (await new DB(config.db, new UI()).connect()).success;
+        return (await (new DB(config.db, new UI())).connect()).success;
     }
 
     validMailCredentials() {
-        if (! "mail" in this.config) {
+        if (! "mail" in this.config.credentials) {
             return false;
         }
         let fields = ['host', 'port', 'secure', 'username', 'password', 'receivers'];
         for (let field in fields) {
-            if (! field in this.config.mail){
+            if (! field in this.config.credentials.mail){
                 return false
             }
             if (field === "receivers" && type(this.config.mail.receivers) !== "array") {
@@ -60,7 +60,7 @@ module.exports = class Valid {
     }
 
     validMailConnection() {
-        let mail = await new Mail(config.mail, new UI()).connect();
+        let mail = await (new Mail(config.mail, new UI())).connect();
         return mail.test().success;
     }
 }

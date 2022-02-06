@@ -4,7 +4,8 @@ const UI = require('./ui.js')
 const DB = require('./db.js')
 const Mail = require('./mail.js')
 const Valid = require('./valid.js')
-const config = require('../config.json') // Make sure that you add a config.json file to the root of the project. Reference can be seen in config.json.example
+const config = require('../config.json'); // Make sure that you add a config.json file to the root of the project. Reference can be seen in config.json.example
+const { exit } = require('process');
 
 const ui = new UI(console);
 
@@ -12,31 +13,36 @@ function test() {
 	const valid = new Valid(config);
 	if (valid.validConfig()) {
 		ui.showMessage("No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.")
-		return
+		return false;
 	}
 
 	if (!valid.validMailCredentials()) {
 		ui.showError("Undefined mail credentials in config.json file. Please refer to config.json.example for more info.");
-		return
+		return false;
 	}
 		
 	if (!valid.validDBCredentials()) {
 		ui.showError("Undefined database credentials in config.json file. Please refer to config.json.example for more info.");
-		return
+		return false;
 	}
 
-
-
-	
+	if (!valid.validPort()) {
+		ui.showError("Invalid port number in config.json file. Please refer to config.json.example for more info. Port number should be between 0 and 65535.");
+		return false;
+	}
 
 	if (config.port === undefined || config.port === null) {
 		ui.showError("Undefined port in config.json file. Please refer to config.json.example for more info.");
-		return
+		return false;
 	}
+
+	
+
+	return true;
 }
 
 function main() {
-	const mail = new Mail(config.mail, ui)
+	const mail = new Mail(config.credentials.mail, ui)
 	const db = new DB(config.credentials.db, ui, mail)
 
 	const app = express()
@@ -85,5 +91,11 @@ function main() {
 	app.listen(port, () => {ui.showMessage(`Server started on port ${port}`)})
 }
 
-test();
-main();
+const args = process.argv.slice(2)
+if (!args.includes("--no-test")) {
+	let success = test();
+	success ? ui.showMessage("Test completed without errors.") : ui.showError("Test failed. Errors shown above.")
+	success ? main() : exit(1)
+} else {
+	main()
+}
