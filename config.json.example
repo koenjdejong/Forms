@@ -8,6 +8,13 @@
             "username": "user",
             "password": "password"
         },
-        "api_key": "1234567890"
+        "mail": {
+            "host": "smtp.example.com",
+            "port": 465,
+            "secure": true,
+            "username": "noreply@example.com",
+            "password": "password",
+            "receivers": ["receiver@example.com"]
+        }
     }
 }
