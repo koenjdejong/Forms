@@ -6,7 +6,7 @@ ___
 ## Description
 This API can be used for creating and submitting forms. It uses MongoDB for storing the form data, so when a form is edited, no change is required. 
 A config.json file is required for the API to work. This file contains database and mail credentials. 
-Test cases for the above specified file will be ran at the start of the program, but can be avoided by using the --no-test flag. 
+Test cases for the above specified file will be ran at the start of the program, but can be avoided by using the `--no-test` flag. 
 
 ## Libraries
 - [NodeJS 14.x - 17.x](https://nodejs.org/en/download/)
