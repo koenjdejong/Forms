@@ -39,9 +39,9 @@ module.exports = class Valid {
         return true;
     }
 
-    validDBConnection() {
-        // replace with .then
-        return new DB(this.config.credentials.db, new UI()).connect().then(reply => {console.log(reply)});
+    async validDBConnection() {
+        // .then only works if the promise is resolved. So it already returns before the connection is made.
+        return (await new DB(this.config.credentials.db, new UI(console)).connect()).success;
     }
 
     validMailCredentials() {
@@ -60,10 +60,10 @@ module.exports = class Valid {
         return true;
     }
 
-    validMailConnection() {
-        let mail = new Mail(this.config.credentials.mail, new UI())
+    async validMailConnection() {
+        let mail = new Mail(this.config.credentials.mail, new UI(console))
         if (mail.connect()) {
-            return mail.test().then(response => {console.log(response)});;
+            return (await mail.test()).success;
         }
         return false;
     }

@@ -9,7 +9,7 @@ const { exit } = require('process');
 
 const ui = new UI(console);
 
-function test() {
+async function test() {
 	const valid = new Valid(config);
 	if (valid.validConfig()) {
 		ui.showMessage("No valid config.json file found. Please make sure that you have a config.json file in the root of the project and it uses the correct format specified in config.json.example.")
@@ -19,7 +19,7 @@ function test() {
 		ui.showError("Undefined mail credentials in config.json file. Please refer to config.json.example for more info.");
 		return false;
 	}
-	if (!valid.validMailConnection()) {
+	if (!(await valid.validMailConnection())) {
 		ui.showError("Could not connect to mail server. Please check your credentials in config.json file.");
 		return false;
 	}
@@ -27,7 +27,7 @@ function test() {
 		ui.showError("Undefined database credentials in config.json file. Please refer to config.json.example for more info.");
 		return false;
 	}
-	if (!valid.validDBConnection()) {
+	if (!(await valid.validDBConnection())) {
 		ui.showError("All database details were found, but a connection could not be made. Please check your database credentials.");
 		return false;
 	}
@@ -95,9 +95,10 @@ function main() {
 
 const args = process.argv.slice(2)
 if (!args.includes("--no-test")) {
-	let success = test();
-	success ? ui.showMessage("Test completed without errors.") : ui.showError("Test failed. Errors shown above.")
-	success ? main() : exit(1)
+	test().then((success) => {
+		success ? ui.showMessage("Test completed without errors.") : ui.showError("Test failed. Errors shown above.")
+		success ? main() : exit(0)
+	}).catch((error) => {ui.showError(error); exit(1)})
 } else {
 	main()
 }

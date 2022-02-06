@@ -15,8 +15,8 @@ module.exports = class Mail {
                 port: this.mail.port,
                 secure: this.mail.secure,
                 auth: {
-                user: this.mail.username,
-                pass: this.mail.username
+                    user: this.mail.username,
+                    pass: this.mail.password
                 }
             });
             return true;
@@ -32,28 +32,27 @@ module.exports = class Mail {
             formattedData += `${key}: ${data[key]}\n`;
         }        
         return `Hello there!\n
-        You have received a new message from the form: ${form}.
-        Here are the details:
-        ${formattedData}
-        Kind regards,
-        
-        Your friendly Form Submission System`;
+You have received a new message from the form: ${form}.
+Here are the details:
+${formattedData}
+Kind regards,
+ 
+Your friendly Form Submission System`;
     }
 
     async test() {
         const options = {
-            from: "",
-            to: "",
-            subject: `TEST`,
-            text: "TEST"
+            from: this.mail.username,
+            to: this.mail.receivers,
+            subject: `Form Submission System has been started`,
+            text: "This is a test message from the Form Submission System, that is created when the tests are ran, usually at the start of the program. "
         };
         try {
             await this.transporter.sendMail(options);
             this.ui.showMessage("Mail sent successfully");
             return {success: true, message: "Test was successful"};
         } catch (error) {
-            console.log("Failed to send mail");
-            console.log(error)
+            this.ui.showError(error);
             return {success: false, message: "There was an error sending the mail. Check the logs for more info."}
         }
     }

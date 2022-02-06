@@ -53,7 +53,7 @@ module.exports = class DB {
             return {success: false, message: "Form does not exist"};
         } catch (error) {
             this.ui.showError(error);
-            return {success: false, message: "There was an database connection error. Check the logs for more info."}
+            return {success: false, message: "Could not insert data. Check the logs for more info."}
         } finally {
             await client.close()
         }
