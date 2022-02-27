@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express')
+const cors = require('cors')
 const UI = require('./ui.js')
 const DB = require('./db.js')
 const Mail = require('./mail.js')
@@ -51,6 +52,7 @@ function main() {
 	const port = config.port
 	app.use(express.json())
 	app.use(express.static('../static'))
+	app.use(cors())
 
 	app.get('/server/status', (request, response) => {
 		response.send({
